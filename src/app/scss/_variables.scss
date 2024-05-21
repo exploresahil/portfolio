@@ -4,3 +4,9 @@ $roboto: "Roboto", sans-serif;
 
 $dark: #232121;
 $light: #f5f3f0;
+
+@mixin full-width {
+  width: 100vw;
+  max-width: 100%;
+  padding: 0 4vw;
+}
