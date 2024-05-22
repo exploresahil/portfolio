@@ -27,9 +27,15 @@ const headerData = [
 const Header = () => {
   //console.log("headerData->", headerData);
 
+  let totalSize = 20;
+
+  const breakpoint = (size: number) => {
+    totalSize + size;
+  };
+
   return (
     <header id="header">
-      <Link href="/#header">
+      <Link href="/#header" onClick={breakpoint(20)}>
         <h1>
           Sahil
           <br />
