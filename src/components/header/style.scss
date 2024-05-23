@@ -13,6 +13,17 @@
     line-height: 1.1;
   }
 
+  #openMenu {
+    padding: rem(8) rem(16);
+    border-radius: rem(1000);
+    display: grid;
+    place-content: center;
+
+    svg {
+      font-size: rem(18);
+    }
+  }
+
   nav {
     display: flex;
     gap: rem(10);
@@ -28,6 +39,42 @@
 
     @include breakpoint(tablet) {
       flex-direction: row;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $dark;
+    color: $light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vw;
+    text-align: center;
+
+    #closeMenu {
+      position: absolute;
+      right: 2vw;
+      top: 2vw;
+      padding: rem(8) rem(16);
+      border-radius: rem(1000);
+      background: none;
+      border: rem(1) solid $light;
+      display: grid;
+      place-content: center;
+
+      svg {
+        color: $light;
+        font-size: rem(18);
+      }
+    }
+
+    nav {
+      gap: rem(1);
     }
   }
 }

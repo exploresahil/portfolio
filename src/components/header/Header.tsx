@@ -1,5 +1,10 @@
+"use client";
+
+import { CgClose } from "react-icons/cg";
 import Link from "next/link";
 import "./style.scss";
+import { useEffect, useState } from "react";
+import { IoIosMenu } from "react-icons/io";
 
 const headerData = [
   {
@@ -26,29 +31,76 @@ const headerData = [
 
 const Header = () => {
   //console.log("headerData->", headerData);
+  //console.log("screen.width->", window.innerWidth);
+  const isSSR = typeof window === "undefined";
 
-  let totalSize = 20;
+  const [width, setWidth] = useState<number>(isSSR ? 0 : window.innerWidth);
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
-  const breakpoint = (size: number) => {
-    totalSize + size;
+  console.log("isMenuOpen->", isMenuOpen);
+
+  //console.log("width->", width);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const maxMoblie = 800;
+
+  const handleOpen = () => {
+    setMenuOpen(true);
+  };
+  const handleClose = () => {
+    setMenuOpen(false);
   };
 
   return (
     <header id="header">
-      <Link href="/#header" onClick={breakpoint(20)}>
+      <Link href="/#header">
         <h1>
           Sahil
           <br />
           Satpute
         </h1>
       </Link>
-      <nav>
-        {headerData.map((eachItem, i) => (
-          <Link key={i} href={eachItem.link}>
-            {eachItem.title}
-          </Link>
-        ))}
-      </nav>
+      {width < maxMoblie ? (
+        <>
+          <button id="openMenu" onClick={handleOpen}>
+            <IoIosMenu />
+          </button>
+
+          {isMenuOpen && (
+            <div className="menu">
+              <button id="closeMenu" onClick={handleClose}>
+                <CgClose />
+              </button>
+              <nav>
+                {headerData.map((eachItem, i) => (
+                  <Link key={i} href={eachItem.link}>
+                    {eachItem.title}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          )}
+        </>
+      ) : (
+        <nav>
+          {headerData.map((eachItem, i) => (
+            <Link key={i} href={eachItem.link}>
+              {eachItem.title}
+            </Link>
+          ))}
+        </nav>
+      )}
     </header>
   );
 };
