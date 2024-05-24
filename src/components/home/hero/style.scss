@@ -1,0 +1,51 @@
+@use "@/app/scss/variables" as *;
+
+#homeHero {
+  @include full-width;
+  height: calc(100vh - rem(50));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: gap(40);
+  align-items: center;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+
+    #border {
+      width: fit-content;
+      align-self: flex-end;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: rem(100);
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .desc {
+      margin-top: rem(40);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: rem(40);
+      font-size: rem(14);
+    }
+  }
+
+  .right {
+    .img-cont {
+      margin-left: auto;
+      width: 75%;
+      aspect-ratio: 4 / 5;
+      position: relative;
+      overflow: hidden;
+      border-radius: rem(20);
+
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+}

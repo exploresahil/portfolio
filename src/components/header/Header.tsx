@@ -5,43 +5,21 @@ import Link from "next/link";
 import "./style.scss";
 import { useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
-
-const headerData = [
-  {
-    title: "Story",
-    link: "/#myStory",
-  },
-  {
-    title: "Workflow",
-    link: "/#workflow",
-  },
-  {
-    title: "Projects",
-    link: "/#projects",
-  },
-  {
-    title: "Experience",
-    link: "/#experience",
-  },
-  {
-    title: "Contacts",
-    link: "/#contacts",
-  },
-];
+import headerData from "./db";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Header = () => {
-  //console.log("headerData->", headerData);
-  //console.log("screen.width->", window.innerWidth);
   const isSSR = typeof window === "undefined";
 
   const [width, setWidth] = useState<number>(isSSR ? 0 : window.innerWidth);
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+  const [isMounted, setMounted] = useState<boolean>(false);
 
-  console.log("isMenuOpen->", isMenuOpen);
-
+  //console.log("isMenuOpen->", isMenuOpen);
   //console.log("width->", width);
 
   useEffect(() => {
+    setMounted(true);
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
@@ -62,47 +40,76 @@ const Header = () => {
     setMenuOpen(false);
   };
 
-  return (
-    <header id="header">
-      <Link href="/#header">
-        <h1>
-          Sahil
-          <br />
-          Satpute
-        </h1>
-      </Link>
-      {width < maxMoblie ? (
-        <>
-          <button id="openMenu" onClick={handleOpen}>
-            <IoIosMenu />
-          </button>
+  const varients = {
+    initial: {
+      x: "100%",
+    },
+    enter: {
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.45, 0, 0.55, 1],
+      },
+    },
+    exit: {
+      x: "100%",
+      transition: {
+        duration: 0.4,
+        ease: [0.45, 0, 0.55, 1],
+      },
+    },
+  };
 
-          {isMenuOpen && (
-            <div className="menu">
-              <button id="closeMenu" onClick={handleClose}>
-                <CgClose />
-              </button>
-              <nav>
-                {headerData.map((eachItem, i) => (
-                  <Link key={i} href={eachItem.link}>
-                    {eachItem.title}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-          )}
-        </>
-      ) : (
-        <nav>
-          {headerData.map((eachItem, i) => (
-            <Link key={i} href={eachItem.link}>
-              {eachItem.title}
-            </Link>
-          ))}
-        </nav>
-      )}
-    </header>
-  );
+  if (isMounted)
+    return (
+      <header id="header">
+        <Link href="/#header">
+          <h1>
+            Sahil
+            <br />
+            Satpute
+          </h1>
+        </Link>
+        {width < maxMoblie ? (
+          <>
+            <button id="openMenu" onClick={handleOpen}>
+              <IoIosMenu />
+            </button>
+            <AnimatePresence initial={false}>
+              {isMenuOpen && (
+                <motion.div
+                  variants={varients}
+                  initial="initial"
+                  animate="enter"
+                  exit="exit"
+                  className="menu"
+                >
+                  <button id="closeMenu" onClick={handleClose}>
+                    <CgClose />
+                  </button>
+                  <nav>
+                    {headerData.map((eachItem, i) => (
+                      <Link key={i} href={eachItem.link}>
+                        {eachItem.title}
+                      </Link>
+                    ))}
+                  </nav>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
+        ) : (
+          <nav>
+            {headerData.map((eachItem, i) => (
+              <Link key={i} href={eachItem.link}>
+                {eachItem.title}
+              </Link>
+            ))}
+          </nav>
+        )}
+      </header>
+    );
+  else return null;
 };
 
 export default Header;
